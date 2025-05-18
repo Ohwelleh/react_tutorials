@@ -1,13 +1,22 @@
 import { useState } from "react";
 
 function Calculator() {
-  const [input, setInput] = useState<string>("0");
-  // Might want to use a Reducer or one of the hooks.
+  const [input, setInput] = useState<string>("");
   function appendToDisplay(value: string) {
-    setInput(value);
+    setInput(input + value);
   }
-  function calculate() {}
-  function clearDisplay() {}
+  function calculate() {
+    let result = "";
+    try {
+      result = eval(input);
+    } catch (e) {
+      result = "Error";
+    }
+    setInput(result);
+  }
+  function clearDisplay() {
+    setInput("");
+  }
 
   return (
     <div className="calculator">
