@@ -12,8 +12,9 @@ const WIN_CONDITIONS: number[][] = [
 ];
 
 const initialCells: string[] = ["", "", "", "", "", "", "", "", ""];
+const initialComputerChoices: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8];
 
-function check_winner(currentCells: string[]) {
+function check_winner(currentCells: string[]): [boolean, string] {
   for (let i = 0; i < WIN_CONDITIONS.length; i++) {
     const condition = WIN_CONDITIONS[i];
     const cellA = currentCells[condition[0]];
@@ -23,34 +24,77 @@ function check_winner(currentCells: string[]) {
     if (cellA === "" || cellB === "" || cellC === "") continue;
 
     if (cellA === cellB && cellB === cellC) {
-      return true;
+      return [true, cellA === "X" ? "Player Wins!!!!" : "Computer Wins!!!"];
     }
   }
 
-  return false;
+  return [false, ""];
 }
 
 function TicTacToe() {
   const [cells, setCells] = useState<string[]>(initialCells);
   const [status, setStatus] = useState<string>("Player's Turn");
+  const [computerChoices, setComputerChoices] = useState<number[]>(
+    initialComputerChoices
+  );
+  const [playerTurn, setPlayerTurn] = useState<boolean>(true);
+
+  function restart_game() {
+    setCells(initialCells);
+    setComputerChoices(initialComputerChoices);
+    setPlayerTurn(true);
+    setStatus("Player's Turn");
+  }
 
   function cell_clicked(cellNumber: number) {
     if (cells[cellNumber] !== "") return;
 
     let newCells = [...cells];
+    let computerCellsArray = [...computerChoices];
+
+    let computerOptions = computerCellsArray.filter(
+      (index) => index != cellNumber
+    );
     newCells[cellNumber] = "X";
+
+    // Updating states.
+    setPlayerTurn(false);
+    setComputerChoices(computerOptions);
+    setStatus("Computer's Turn");
     setCells(newCells);
   }
 
-  function restart_game() {
-    setCells(initialCells);
+  function computerTurn() {
+    // Computer playing.
+    let computerCells = [...cells];
+    let computerCellNumber =
+      computerChoices[Math.floor(Math.random() * computerChoices.length)];
+    let computerCellsArray = [...computerChoices];
+
+    let computerOptions = computerCellsArray.filter(
+      (index) => index != computerCellNumber
+    );
+
+    computerCells[computerCellNumber] = "O";
+    setComputerChoices(computerOptions);
     setStatus("Player's Turn");
+    setCells(computerCells);
   }
 
   useEffect(() => {
-    if (check_winner(cells)) {
-      setStatus("Winner!!!");
+    let result: [boolean, string] = check_winner(cells);
+    if (result[0]) {
+      setStatus(result[1]);
+      setPlayerTurn(true);
     }
+
+    // Delaying the computer's turn by 2 seconds to allow the board to update players turn.
+    setTimeout(() => {
+      if (!playerTurn && !result[0]) {
+        computerTurn();
+        setPlayerTurn(true);
+      }
+    }, 1000);
   }, [cells]);
 
   return (
