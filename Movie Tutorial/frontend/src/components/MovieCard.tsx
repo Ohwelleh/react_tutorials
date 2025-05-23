@@ -1,5 +1,7 @@
 import type { Movie } from "../custom types/MovieTypes";
 
+import "../css/MovieCard.css";
+
 function MovieCard({ movie }: { movie: Movie }) {
   function handleFavoriteClick() {
     alert("Clicked");

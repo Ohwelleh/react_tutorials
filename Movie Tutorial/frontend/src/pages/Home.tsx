@@ -4,6 +4,8 @@ import MovieCard from "../components/MovieCard";
 // Import types
 import type { Movie } from "../custom types/MovieTypes";
 
+import "../css/Home.css";
+
 function Home() {
   const [searchQuery, setSearchQuery] = useState<string>("");
 

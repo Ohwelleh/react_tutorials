@@ -6,7 +6,7 @@ import Favorites from "./pages/Favorites";
 import NavBar from "./components/NavBar";
 
 // Styling.
-import "./App.css";
+import "./css/App.css";
 
 function App() {
   return (
