@@ -15,4 +15,8 @@ export type Movie = {
    * The release date of the movie.
    */
   release_date: string;
+  /**
+   * Path for movie poster
+   */
+  poster_path: string;
 };
