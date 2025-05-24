@@ -1,8 +1,8 @@
 export type Movie = {
   /**
-   * OPTIONAL: Unique Identifing number.
+   * Unique Identifing number.
    */
-  id?: number;
+  id: number;
   /**
    * The full name of the movie.
    */
